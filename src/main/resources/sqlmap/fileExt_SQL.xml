@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE  mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="fileExt">
+
+	<select id="selectApplyFileExtList" resultType="hashMap">
+		<![CDATA[
+			/*selectApplyFileExtList*/
+			SELECT EXT
+				, TYPE
+			FROM TB_FILE_EXT
+			WHERE USE_YN = 'Y'
+		]]>
+	</select>
+
+	<select id="selectDuplExt" parameterType="hashMap" resultType="hashMap">
+		<![CDATA[
+			/*selectDuplExt*/
+			SELECT CASE WHEN COUNT(*) > 0 THEN 'Y' ELSE 'N' END AS DUPL_YN
+			FROM TB_FILE_EXT
+			WHERE EXT = #{ext}
+		]]>
+	</select>
+	
+	<insert id="insertExt" parameterType="hashMap">
+		<![CDATA[
+			/*insertExt*/
+			INSERT INTO TB_FILE_EXT(EXT, TYPE, USE_YN, MOD_DT)
+			VALUES(#{ext}, 'C', 'Y', DATE_FORMAT(SYSDATE(), '%Y%m%d%H%i%s'))
+		]]>
+	</insert>
+	
+	<insert id="toggleExt" parameterType="hashMap">
+		<![CDATA[
+			/*toggleExt*/
+			INSERT INTO TB_FILE_EXT(EXT, TYPE, USE_YN, MOD_DT)
+			VALUES(#{ext}, 'D', #{useYn}, DATE_FORMAT(SYSDATE(), '%Y%m%d%H%i%s'))
+			ON DUPLICATE KEY UPDATE USE_YN = #{useYn}, MOD_DT = DATE_FORMAT(SYSDATE(), '%Y%m%d%H%i%s')
+		]]>
+	</insert>
+	
+	<delete id="deleteExt" parameterType="hashMap">
+		<![CDATA[
+			/*deleteExt*/
+			DELETE FROM TB_FILE_EXT
+			WHERE EXT = #{ext} AND TYPE = 'C' AND USE_YN = 'Y'
+		]]>
+	</delete>
+	
+</mapper>
