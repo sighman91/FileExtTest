@@ -17,7 +17,7 @@
 			/*selectDuplExt*/
 			SELECT CASE WHEN COUNT(*) > 0 THEN 'Y' ELSE 'N' END AS DUPL_YN
 			FROM TB_FILE_EXT
-			WHERE EXT = #{ext}
+			WHERE EXT IN (#{ext}, 'bat', 'cmd', 'com', 'cpl', 'exe', 'scr', 'js') 
 		]]>
 	</select>
 	
