@@ -15,9 +15,10 @@
 	<select id="selectDuplExt" parameterType="hashMap" resultType="hashMap">
 		<![CDATA[
 			/*selectDuplExt*/
-			SELECT CASE WHEN COUNT(*) > 0 THEN 'Y' ELSE 'N' END AS DUPL_YN
+			SELECT CASE WHEN #{ext} IN ('bat', 'cmd', 'com', 'cpl', 'exe', 'scr', 'js') THEN 'Y' 
+				ELSE CASE WHEN COUNT(*) > 0 THEN 'Y' ELSE 'N' END END AS DUPL_YN
 			FROM TB_FILE_EXT
-			WHERE EXT IN (#{ext}, 'bat', 'cmd', 'com', 'cpl', 'exe', 'scr', 'js') 
+			WHERE EXT = #{ext}
 		]]>
 	</select>
 	
